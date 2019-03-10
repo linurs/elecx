@@ -1,11 +1,11 @@
 // din holder
 include <dinrail_dim.scad> 
-include <linurs_screw_dim.scad>
+include <../linurs/linurs_screw_dim.scad>
 include <dinrail_holder_dim.scad>
 
 use <dinrail.scad>
-use <linurs_screw.scad>
-use <linurs_body.scad>
+use <../linurs/linurs_screw.scad>
+use <../linurs/linurs_body.scad>
 
 module dinrail_screw(dinholder_x=100,t=0){
     for(x=[-1,1]){ 

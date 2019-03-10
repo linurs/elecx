@@ -2,16 +2,15 @@
 // walls of the elecx
 include <wall_dim.scad>
 include <../elecx_dim.scad>
-
 include <../pcbmodule/pcbmodule_dim.scad>
 include <../foot/foot_dim.scad>
 include <../head/head_dim.scad>
-include <../library/linurs_screw_dim.scad>
+include <../library/linurs/linurs_screw_dim.scad>
 
-use <../library/linurs_body.scad>
+use <../library/linurs/linurs_body.scad>
 use <../head/head.scad>
 use <../foot/foot.scad>
-use <../library/linurs_screw.scad>
+use <../library/linurs/linurs_screw.scad>
 use <../elecx_screw.scad>
 
 

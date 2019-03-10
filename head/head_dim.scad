@@ -1,5 +1,5 @@
 // elecbox
-include <../library/linurs_screw_dim.scad>
+include <../library/linurs/linurs_screw_dim.scad>
 include <../motherboard/motherboard_dim.scad>
 include <../pcbmodule/pcbmodule_dim.scad>
 include <../wall/wall_dim.scad>
@@ -14,4 +14,3 @@ head_groove_z=4;
 head_brand_x=2;
 head_undercut=2;
 head_groove_access_x=20;
-

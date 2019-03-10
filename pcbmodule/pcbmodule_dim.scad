@@ -1,4 +1,4 @@
-include <../library/linurs_screw_dim.scad>
+include <../library/linurs/linurs_screw_dim.scad>
 include <../motherboard/motherboard_dim.scad>
 // pcb constants
 pcb_h=80;              // height of the pcb

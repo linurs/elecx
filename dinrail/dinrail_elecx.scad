@@ -2,13 +2,13 @@
 // to check how the components interfere
 
 include <../elecx_dim.scad>
-include <../library/dinrail_dim.scad>
+include <../library/dinrail/dinrail_dim.scad>
 include <../motherboard/motherboard_dim.scad>
 include <../foot/foot_dim.scad>
-include <../library/dinrail_holder_dim.scad>
+include <../library/dinrail/dinrail_holder_dim.scad>
 
-use <../library/dinrail.scad>
-use <../library/dinrail_holder.scad>
+use <../library/dinrail/dinrail.scad>
+use <../library/dinrail/dinrail_holder.scad>
 
 module dinrail_elecx_single(type=0){
   if(type==0){

@@ -2,10 +2,10 @@
 include <../elecx_dim.scad>
 include <../motherboard/motherboard_dim.scad>
 include <../pcbmodule/pcbmodule_dim.scad>
-include <../library/dinrail_holder_dim.scad>
+include <../library/dinrail/dinrail_holder_dim.scad>
 include <foot_dim.scad>
 
-use <../library/linurs_body.scad>
+use <../library/linurs/linurs_body.scad>
 use <../wall/wall.scad>
 use <../pcbmodule/pcbmodule.scad>
 use <../elecx_screw.scad>
@@ -103,8 +103,8 @@ module foot(n=1, type=foot_type_none){
         }
     }// removing material
     motherboard_screw(n=n,t=screw_t, raise=foot_outer_z/2);
-    wall_foot_screw(t=screw_t);
-    wall_foot_opposite_screw(t=screw_t);
+    wall_foot_screw(n=n,t=screw_t);
+    wall_foot_opposite_screw(n=n,t=screw_t);
     if(type==foot_type_dinrail){  // holes for din holder
            dinrail_elecx(n=n, type=1);
     }

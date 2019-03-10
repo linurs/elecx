@@ -1,7 +1,7 @@
 // elecx
 // The coordinate systems [0.0.0] point is the first PCB's lower right corner at the soldering side
 
-include <library/linurs_screw_dim.scad>
+include <library/linurs/linurs_screw_dim.scad>
 include <motherboard/motherboard_dim.scad>
 include <pcbmodule/pcbmodule_dim.scad>
 include <wall/wall_dim.scad>
