@@ -12,10 +12,11 @@ use <wall/wall.scad>
 use <foot/foot.scad>
 use <head/head.scad>
 use <dinrail/dinrail_elecx.scad>
+use <elecx_screw.scad>
 
 // set animation to 1 to animate otherwise to 0
 // In the animation set FPS to 10 and steps to 50
-animation=0; 
+animation=1; 
 
 if(animation==1){
 
@@ -23,7 +24,7 @@ if(animation==1){
   rotate([0,0,-$t*360])
   translate([-foot_x/2,-(foot_min_y+(n-1)*step)/2,0])  
   {      
-      motherboard(n=n);  
+      motherboard_assembled(n=n);  
       if(($t>0.1)&&($t<0.8))
           color("blue")foot(n=n, type=foot_type_none);
       else 
@@ -35,15 +36,25 @@ if(animation==1){
   }
       
 }else{
-    n=4;
+    n=2;
     difference(){
         union(){
-             motherboard(n=n);
-             pcbmodule(n=n);
-             walls(n=n, vent=1, brand=1);
-             foot(n=n, type=foot_type_none);  
-             head(n=n, vent=1, brand=1);
-             dinrail_elecx(n=n);
+            motherboard_assembled(n=n,type=1);
+         // pcbmodule(n=n);
+         // walls(n=n, vent=1, brand=1);
+         //
+            wall(n=n, vent=1, brand=1);
+         // 
+            foot(n=n, type=foot_type_none);  
+         // 
+            head(n=n, vent=1, brand=1);
+         // dinrail_elecx(n=n);   
+            
+         // motherboard_screw(n=n, raise=10);
+         // wall_head_screw(n=n);
+         // wall_head_opposite_screw(n=n);
+         // wall_foot_screw(n=n);
+         // wall_foot_opposite_screw(n=n); 
         }
         // use % to see where the cubes are and cut
         // %translate([-75,-50,-50]) cube([150,150,150]);

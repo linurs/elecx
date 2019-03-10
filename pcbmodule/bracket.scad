@@ -6,9 +6,9 @@
 
 include <pcbmodule_dim.scad>
 include <../motherboard/motherboard_dim.scad>
-include <../library/linurs_screw_dim.scad>
+include <../library/linurs/linurs_screw_dim.scad>
 
-use <../library/linurs_screw.scad>
+use <../library/linurs/linurs_screw.scad>
 
 
 module bracket(type=0, width=1, var=0){

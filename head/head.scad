@@ -2,13 +2,13 @@
 // the head of the elecx
 
 include <../elecx_dim.scad>
-include <../library/linurs_screw_dim.scad>
+include <../library/linurs/linurs_screw_dim.scad>
 include <../motherboard/motherboard_dim.scad>
 include <../foot/foot_dim.scad>
 include <head_dim.scad>
 
-use <../library/linurs_body.scad>
-use <../library/linurs_screw.scad>
+use <../library/linurs/linurs_body.scad>
+use <../library/linurs/linurs_screw.scad>
 use <../elecx_screw.scad>
 use <../wall/wall.scad>
 

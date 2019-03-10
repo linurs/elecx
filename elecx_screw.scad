@@ -1,20 +1,20 @@
 // Screws for ElecX
 include <motherboard/motherboard_dim.scad>
-include <library/linurs_screw_dim.scad>
+include <library/linurs/linurs_screw_dim.scad>
 include <foot/foot_dim.scad>
 include <head/head_dim.scad>
 
-use <library/linurs_screw.scad>
+use <library/linurs/linurs_screw.scad>
 use <motherboard/motherboard.scad>
 use <foot/foot.scad>
 use <wall/wall.scad>
 use <head/head.scad>
 
-screw_motherboard_l1=12;
-screw_motherboard_l2=16;
 screw_motherboard_d=M2_5;
-screw_wall_foot_l=20; 
+screw_motherboard_l=16;
+
 wall_screw=M3;
+screw_wall_foot_l=16; 
 screw_wall_head_l=12; 
 
 module motherboard_screw(n=1,t=0, raise=0){
@@ -24,13 +24,14 @@ module motherboard_screw(n=1,t=0, raise=0){
         if(i%2==0){  
             translate([(j*motherboard_con_d_w+motherboard_w)/2,
                         step/2*(i-1)+motherboard_con_t/2,
-                        -motherboard_con_out+headh(d=screw_motherboard_d, type=head_cyl)-pcbmodule_con_out-screw_motherboard_l1/2])
-            screw_fix(w=screw_motherboard_l1,d=screw_motherboard_d,type=head_cyl, t=t, raise=raise);
+             -pcbmodule_con_out-screw_motherboard_l/2])
+            screw_fix(w=screw_motherboard_l,d=screw_motherboard_d,type=head_cyl, t=t, raise=raise);
         }else{
             translate([(j*motherboard_con_d_w+motherboard_w)/2,
                        step/2*(i-1)+motherboard_con_t/2,
-                       -pcbmodule_con_out-screw_motherboard_l2/2])
-            screw_fix(w=screw_motherboard_l2,d=screw_motherboard_d,type=head_cyl, t=t, raise=raise);
+                        
+                       -pcbmodule_con_out-screw_motherboard_l/2])
+            screw_fix(w=screw_motherboard_l,d=screw_motherboard_d,type=head_cyl, t=t, raise=raise);
         }    
       }
     }
@@ -85,23 +86,24 @@ translate([0,wall_mirror_offset_y+(n-1)*step,0])
   mirror([0,1,0])wall_head_screw();
 }
 
+n=1;
 
-n=4;
-
-//motherboard_screw(n=n, raise=10);
+//
+motherboard_screw(n=n, raise=10);
 //%motherboard_assembled(n=n, type=0);
 
 //
 wall_head_screw();
-//wall_head_opposite_screw();
-
-//wall_foot_screw();
-//wall_foot_opposite_screw();
-//%foot(n=n);
 //
-%wall(n=n);
+wall_head_opposite_screw();
+//
+wall_foot_screw();
+//
+wall_foot_opposite_screw();
+//
+%foot(n=n);
+//%wall(n=n);
 //%walls(n=n);
-//
-%head(n=n);
+//%head(n=n);
 
 

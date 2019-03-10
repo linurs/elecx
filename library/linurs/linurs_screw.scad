@@ -1,5 +1,5 @@
 // Metric screws and nuts 
-// urs@linurs.org 2015
+// urs@linurs.org 2019
 // It is targeted for 3D printing applications. 
 // To look realistic is not the goal (Example: Nuts do not have a hole)
 
@@ -93,18 +93,20 @@ module screw_fix(w=10, d=M3, type=head_cyl, sink=0, raise=0, t=0){
   screw(w=w-sink*2, d=d, type=type, t=t);
   translate([0,0,-(w-sink*2)/2+nuth(d)/2])
     nut(d=d,t=t);
-  translate([0,0,-(w-sink+raise)/2])hex_bolt(d=d,h=sink+raise,t=t);    
+  //additional material to be removed above the nut  
+  translate([0,0,-(w-sink+raise)/2])hex_bolt(d=d,h=sink+raise+0.01,t=t);    
+  //additional material to be removed above the screw head
   if(type==head_cnt){  
     translate([0,0,(w-sink+raise)/2])
-    cylinder(d=screw_cnt[d][0]+t,h=sink+raise,center=true,$fn=16);
+    cylinder(d=screw_cnt[d][0]+t,h=sink+raise+0.01,center=true,$fn=16);
   }else{ 
     translate([0,0,(w-sink+raise)/2])
-    cylinder(d=screw_cyl[d][0]+t,h=sink+raise,center=true,$fn=16);
+    cylinder(d=screw_cyl[d][0]+t,h=sink+raise+0.01,center=true,$fn=16);
   }     
 }
 //screw_fix();
 //translate([10,0,0])screw_fix(sink=2,type=head_cnt);
-//translate([-10,0,0])screw_fix(raise=2,type=head_cnt);
+//
 
 // screw cut
 // material to be extracted from object to slide in a counter sunk screw for fixation
@@ -156,11 +158,10 @@ module nut_cut(w=10, wi=0, d=M3, i=10, t=0, raise=0, type=head_cyl){
           cylinder(d=screw_cyl[d][0]+t,h=raise,center=true,$fn=16);
       }       
 }
-//
-nut_cut(raise=2,type=head_cnt,i=14,w=20,wi=2, t=1);
+//nut_cut(raise=2,type=head_cnt,i=14,w=20,wi=2, t=1);
 
 // present the library
-show=0;
+show=1;
 
 if(show==1){
     grid=20;
