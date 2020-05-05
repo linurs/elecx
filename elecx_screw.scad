@@ -60,7 +60,7 @@ module wall_foot_screw(t=0,raise=0){
     }
 }
 
-module wall_foot_opposite_screw(t=0,raise=0){
+module wall_foot_opposite_screw(t=0,raise=0, n=1){
 wall_mirror_offset_y=step+2*(-wall_fix_y+wall_y);    
 translate([0,wall_mirror_offset_y+(n-1)*step,0])
   mirror([0,1,0])wall_foot_screw();
@@ -80,13 +80,13 @@ module wall_head_screw(t=0){
     
 }
 
-module wall_head_opposite_screw(t=0){
+module wall_head_opposite_screw(t=0, n=1){
 wall_mirror_offset_y=step+2*(-wall_fix_y+wall_y);    
 translate([0,wall_mirror_offset_y+(n-1)*step,0])
   mirror([0,1,0])wall_head_screw();
 }
 
-n=1;
+n=5;
 
 //
 motherboard_screw(n=n, raise=10);
@@ -95,11 +95,11 @@ motherboard_screw(n=n, raise=10);
 //
 wall_head_screw();
 //
-wall_head_opposite_screw();
+wall_head_opposite_screw(n=n);
 //
 wall_foot_screw();
 //
-wall_foot_opposite_screw();
+wall_foot_opposite_screw(n=n);
 //
 %foot(n=n);
 //%wall(n=n);

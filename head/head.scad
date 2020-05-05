@@ -96,8 +96,8 @@ module head(n=1,vent=0, brand=0){
             }
             
         }// removing material 
-        wall_head_screw(t=screw_t);  
-        wall_head_opposite_screw(t=screw_t);  
+        wall_head_screw(t=screw_t, n=n);  
+        wall_head_opposite_screw(t=screw_t,n=n);  
                 
         if(vent==1){
           for(j=[0:head_vent_n]){
@@ -126,9 +126,9 @@ module head(n=1,vent=0, brand=0){
         
         if(brand==1){         
          translate([
-        (motherboard_w-2*bracket_offset_x+2*foot_side_wall_t)/2+bracket_offset_x-foot_side_wall_t,
-        (foot_min_y+(n-1)*step)/2+foot_offset_y,
-        head_z/2])
+           (motherboard_w-2*bracket_offset_x+2*foot_side_wall_t)/2+bracket_offset_x-foot_side_wall_t,
+           (foot_min_y+(n-1)*step)/2+foot_offset_y,
+           head_z/2])
          rotate([0,0,90])
          linear_extrude(height = motherboard_w ) {
          text(branding, 
@@ -141,7 +141,7 @@ module head(n=1,vent=0, brand=0){
     }        
 }
 
-n=4;//%walls(n=n);
+n=5;//%walls(n=n);
 //%wall();
 //%head(n=n, vent=1, brand=1);
 //%bracket();
@@ -149,6 +149,7 @@ n=4;//%walls(n=n);
 //pcb();
 
 //to print
-//rotate([180,0,0])
+//
+rotate([180,0,0])
 //
 head(n=n, vent=1, brand=1);

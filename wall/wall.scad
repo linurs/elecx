@@ -137,7 +137,8 @@ module walls(n=1, vent=0, brand=1){
 //%foot();
 
 //to print
-//rotate([90,0,0])
+//
+rotate([90,0,0])
 //
 wall(vent=1, brand=1);
 //rotate([-90,0,0])wall_opposite(vent=1, brand=1);

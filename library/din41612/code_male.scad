@@ -3,4 +3,4 @@ use <connector.scad>
 
 code=0;
 
-connector(type=1,code=code);
+rotate([180,0,0])connector(type=1,label=0,code=code);
