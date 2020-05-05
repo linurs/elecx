@@ -16,7 +16,8 @@ use <elecx_screw.scad>
 
 // set animation to 1 to animate otherwise to 0
 // In the animation set FPS to 10 and steps to 50
-animation=1; 
+//animation=1; 
+animation=0; 
 
 if(animation==1){
 
@@ -40,14 +41,14 @@ if(animation==1){
     difference(){
         union(){
             motherboard_assembled(n=n,type=1);
-         // pcbmodule(n=n);
-         // walls(n=n, vent=1, brand=1);
+            pcbmodule(n=n);
+            walls(n=n, vent=1, brand=1);
          //
-            wall(n=n, vent=1, brand=1);
+         //   wall(n=n, vent=1, brand=1);
          // 
             foot(n=n, type=foot_type_none);  
          // 
-            head(n=n, vent=1, brand=1);
+         //   head(n=n, vent=1, brand=1);
          // dinrail_elecx(n=n);   
             
          // motherboard_screw(n=n, raise=10);

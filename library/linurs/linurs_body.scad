@@ -43,7 +43,7 @@ module roundcube(size=[1,1,1], r=0.1, center=false, $fn=8){
       for(y=[-size[1]/2+r,size[1]/2-r]){
         for(z=[-size[2]/2+r,size[2]/2-r]){
           translate([x,y,z])
-            sphere(r=r, center=true,$fn=$fn);   
+            sphere(r=r, $fn=$fn);   
         }
       }
     }

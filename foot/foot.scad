@@ -12,7 +12,14 @@ use <../elecx_screw.scad>
 use <../motherboard/motherboard.scad>
 use <../dinrail/dinrail_elecx.scad>
 
-module foot(n=1, type=foot_type_none){
+foot_vent_x=1.5;
+foot_vent_y=2;
+foot_vent_n=11;
+
+foot_vent_start=foot_x/2-30+foot_offset_x;
+foot_vent_stop =foot_x/2+30+foot_offset_x;
+
+module foot(n=1, vent=0, type=foot_type_none){
     echo("footnew");
     foot_y=foot_min_y+(n-1)*step;
     difference(){
@@ -108,10 +115,26 @@ module foot(n=1, type=foot_type_none){
     if(type==foot_type_dinrail){  // holes for din holder
            dinrail_elecx(n=n, type=1);
     }
+    
+    
+    
+    if(vent==1){
+          z=foot_offset_z-foot_bottom_t;
+          for(j=[0:foot_vent_n]){
+             x=(foot_vent_stop-foot_vent_start)/foot_vent_n*j+foot_vent_start;
+             for(i=[0:n-1]){
+               y=(foot_min_y-step)/2+foot_offset_y+i*step+foot_vent_y/2;  
+               translate([x,y,z])
+                cube([foot_vent_x,
+                       step-foot_vent_y,
+                       3*foot_bottom_t]);
+            }
+          }
+        }
   }  
 }    
 
-n=4;
+n=5;
 //walls(n=n);
 //pcbmodule(n=n);
 //wall();
@@ -120,7 +143,7 @@ n=4;
 //foot(n=n, type=foot_type_none);
 //translate([0,150,0])
 //
-foot(n=n, type=foot_type_dinrail);
+foot(n=n, type=foot_type_dinrail, vent=1);
 //translate([0,300,0])
 //foot(n=n, type=foot_type_bracket);
 //motherboard_assembled(n=n, type=0);
