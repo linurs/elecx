@@ -160,6 +160,28 @@ module nut_cut(w=10, wi=0, d=M3, i=10, t=0, raise=0, type=head_cyl){
 }
 //nut_cut(raise=2,type=head_cnt,i=14,w=20,wi=2, t=1);
 
+// nut cut
+// material to be extracted from object to slide in a nut for fixation
+// w height of the cylinder
+// i lenght of the inlet
+module nut_cut_r(w=10, wi=0, d=M3, i=10, t=0, raise=0, type=head_cyl){ 
+  rotate([0,0,90])nut(d,t);
+  translate([i/2,0,0])
+    cube([i,screw_hex[d][1]+t,nuth(d)+t],center=true);
+  translate([0,0,-wi])
+      if(type==head_cnt){    
+          screw(w=w, d=d, type=type, t=t); 
+        translate([0,0,(w+raise)/2-0.01])
+          cylinder(d=screw_cnt[d][0]+t,h=raise,center=true,$fn=16);
+      }else{ 
+          screw(w=w, d=d, type=type, t=t);   
+        translate([0,0,(w+raise)/2-0.01])
+          cylinder(d=screw_cyl[d][0]+t,h=raise,center=true,$fn=16);
+      }       
+}
+//nut_cut(raise=2,type=head_cnt,i=14,
+
+
 // present the library
 show=1;
 

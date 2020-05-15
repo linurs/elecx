@@ -7,7 +7,7 @@ include <../wall/wall_dim.scad>
 // foot constants
 foot_motherboard_z=8; // z distance of free space under motherboard
 foot_motherboard_f=8;  // motherboard support distance
-foot_side_wall_t=1;    // thickness of side wall
+foot_side_wall_t=wall_t;    // thickness of side wall
 foot_min_y=step+2*(wall_y+foot_side_wall_t); // 1 module y dimension of the foot
 
 foot_step=pcbmodule_con_out+motherboard_con_out+motherboard_t+bracket_offset_z; // motherboard solder side to bracket
@@ -21,7 +21,7 @@ foot_x=motherboard_w-2*bracket_offset_x+2*foot_side_wall_t; // x dimension of fo
 
 //foot offsets
 foot_offset_x=bracket_offset_x-foot_side_wall_t; // x dimension 
-foot_offset_y=-wall_fix_y-foot_side_wall_t;      // y dimension 
+foot_offset_y=-bracket_hole_cube_h-wall_y-wall_t;//-wall_fix_y-foot_side_wall_t;      // y dimension 
 foot_offset_z=bracket_offset_z-foot_z;           // z dimension 
 
 // enumerations for foot fixing variants

@@ -2,9 +2,9 @@ include <../library/linurs/linurs_screw_dim.scad>
 include <../motherboard/motherboard_dim.scad>
 
 // wall constants
-wall_t=1;        // wall thickness
+wall_t=2;        // wall thickness
 
-wall_y=5;        // wall outside thickness
+wall_y=6.5;        // wall outside thickness
 wall_fix_y=9;    // thickness of the wall fix cube
 wall_gap_x=motherboard_w-2*wall_fix_y; // remove material between both wall fixation cubes
 wall_head_fix_h=5; // height of the head fixing cube

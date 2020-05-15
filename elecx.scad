@@ -37,14 +37,15 @@ if(animation==1){
   }
       
 }else{
-    n=2;
+    n=1;
     difference(){
         union(){
-            motherboard_assembled(n=n,type=1);
-            pcbmodule(n=n);
+         //   motherboard_assembled(n=n,type=1);
+          //  pcbmodule(n=n);
+         //   
             walls(n=n, vent=1, brand=1);
          //
-         //   wall(n=n, vent=1, brand=1);
+         //              wall(n=n, vent=1, brand=1);
          // 
             foot(n=n, type=foot_type_none);  
          // 

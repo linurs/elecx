@@ -24,7 +24,7 @@ head_vent_stop2=(motherboard_w-2*bracket_offset_x)/2+bracket_offset_x+head_groov
 head_brand_y=1;
 head_undercut_x=(motherboard_w-2*bracket_offset_x-head_groove_access_x-2*head_bracket_x)/2;
 
-module head(n=1,vent=0, brand=0){
+module head(n=1,vent=0, brand=0, top=0){
     echo("headnew");
     head_y=foot_min_y+(n-1)*step;
     difference(){
@@ -64,7 +64,7 @@ module head(n=1,vent=0, brand=0){
             
             head_bracket_stand=head_z-(bracket_h-pcb_h+bracket_offset_z);            
             for(i=[foot_side_wall_t,
-                    motherboard_w-2*bracket_offset_x-foot_side_wall_t]){
+                    motherboard_w-2*bracket_offset_x-foot_side_wall_t+2]){
                 translate([i-pass_t/2,
                            foot_side_wall_t,
                            -head_bracket_stand])                
@@ -81,7 +81,7 @@ module head(n=1,vent=0, brand=0){
                            -head_bracket_stand])                
                         
                 cube([head_groove_access_x,
-                      wall_fix_y+wall_t+foot_side_wall_t,
+                      wall_fix_y+wall_t+foot_side_wall_t-1,
                       head_bracket_stand]);  // wall fixation cube up to braket stand
             }
             for(i=[foot_side_wall_t+wall_t,
@@ -91,35 +91,52 @@ module head(n=1,vent=0, brand=0){
                            -head_z])                
                         
                 cube([head_groove_access_x,
-                      wall_fix_y,
+                      wall_fix_y-1,
                       head_z]);  // wall fixation cube up to head
             }
             
+            if(top==1){
+        translate([5,
+                   12,
+                   -7])  
+        cube([100,17.4,8]);
+        }    
+            
         }// removing material 
-        wall_head_screw(t=screw_t, n=n);  
+        wall_head_screw(t=screw_t);  
         wall_head_opposite_screw(t=screw_t,n=n);  
-                
+        
+        if(top==1){
+        translate([2,-0.50+2,
+                         0])
+        cube([100-4,17.4-4,500]);
+        }    
+        
         if(vent==1){
-          for(j=[0:head_vent_n]){
+          for(j=[0:head_vent_n]){ 
              for(i=[0:n-1]){
-               translate([
-                         (head_vent_stop1-head_vent_start1)/head_vent_n*j+head_vent_start1,
-                         (foot_min_y-step)/2+foot_offset_y+i*step+head_vent_y/2,
-                         head_z+pcb_h-head_t/2])
-                cube([head_vent_x,
-                       step-head_vent_y,
-                       2*head_t]);
+               if((top!=1)||(i!=0)){  
+                   translate([
+                             (head_vent_stop1-head_vent_start1)/head_vent_n*j+head_vent_start1,
+                             (foot_min_y-step)/2+foot_offset_y+i*step+head_vent_y/2,
+                             head_z+pcb_h-head_t/2])
+                    cube([head_vent_x,
+                           step-head_vent_y,
+                           2*head_t]);
+               }
             }
           }
           for(j=[0:head_vent_n]){
             for(i=[0:n-1]){
-               translate([
-                         (head_vent_stop2-head_vent_start2)/head_vent_n*j+head_vent_start2,
-                         (foot_min_y-step)/2+foot_offset_y+i*step+head_vent_y/2,
-                         head_z+pcb_h-head_t/2])
-               cube([head_vent_x,
-                      step-head_vent_y,
-                      2*head_t]);
+              if((top!=1)||(i!=0)){   
+                   translate([
+                             (head_vent_stop2-head_vent_start2)/head_vent_n*j+head_vent_start2,
+                             (foot_min_y-step)/2+foot_offset_y+i*step+head_vent_y/2,
+                             head_z+pcb_h-head_t/2])
+                   cube([head_vent_x,
+                          step-head_vent_y,
+                          2*head_t]);
+              }
             }
           }
         }
@@ -141,15 +158,16 @@ module head(n=1,vent=0, brand=0){
     }        
 }
 
-n=5;//%walls(n=n);
+n=1;//%walls(n=n);
 //%wall();
 //%head(n=n, vent=1, brand=1);
 //%bracket();
 //%bracket(type=1);
 //pcb();
 
+//%wall_head_screw(t=0);  
+//%wall_head_opposite_screw(t=0,n=n);  
 //to print
+//rotate([180,0,0])
 //
-rotate([180,0,0])
-//
-head(n=n, vent=1, brand=1);
+head(n=n, vent=1, brand=0, top=1);

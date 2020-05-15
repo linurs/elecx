@@ -57,12 +57,14 @@ module Stepperback(){
         translate([0,14/2,15+14/2])cube([20,14,14],center=true); 
         translate([0,14/2,30+14/2])cube([20,14,14],center=true); 
         translate([0,14/2,45+14/2])cube([20,14,14],center=true); 
-        translate([0,14/2,60+14/2])cube([20,14,8],center=true); 
+     //   translate([0,14/2,60+14/2])cube([20,14,8],center=true); 
             
     }
 }
-//rotate([0,90,0])
-//Stepperback();
+//
+rotate([0,90,0])
+//
+Stepperback();
 
 module Stepperfront(){
     difference(){

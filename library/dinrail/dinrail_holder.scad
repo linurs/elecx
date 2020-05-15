@@ -155,10 +155,9 @@ s=2;
 t=2;
 n=3;
 
+//%rotate([180,0,0])
+//dinrail_bracket(dinholder_x=dinholder_x);
 //%
-rotate([180,0,0])
-//
-dinrail_bracket(dinholder_x=dinholder_x);
-//%dinrail_lever(dinholder_x=dinholder_x, s=s, n=n, t=t);
+dinrail_lever(dinholder_x=dinholder_x, s=s, n=n, t=t);
 //%dinrail_lever_holder(dinholder_x=dinholder_x,s=s);
 //%dinrail();

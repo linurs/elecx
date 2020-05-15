@@ -64,10 +64,8 @@ module pcb(){
     cylinder(d=z2,h=3*pcb_thick,center=true,$fn=64);
   }
 }
-//
-rotate([90,0,0])
-//
-pcb();
+//rotate([90,0,0])
+//pcb();
 
 module RaspberryPi3Bback(){
     h=8;
@@ -119,5 +117,7 @@ module RaspberryPi3Bfront(){
         translate([0,h3/2+pcb_thick-y3,z3+w3/2])cube([bracket_x1,h3,w3],center=true);         
     }
 }
-//rotate([0,-90,0])
-//RaspberryPi3Bfront();
+//
+rotate([0,-90,0])
+//
+RaspberryPi3Bfront();

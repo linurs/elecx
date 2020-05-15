@@ -13,7 +13,7 @@ use <../motherboard/motherboard.scad>
 use <../dinrail/dinrail_elecx.scad>
 
 foot_vent_x=1.5;
-foot_vent_y=2;
+foot_vent_y=6;
 foot_vent_n=11;
 
 foot_vent_start=foot_x/2-30+foot_offset_x;
@@ -22,6 +22,7 @@ foot_vent_stop =foot_x/2+30+foot_offset_x;
 module foot(n=1, vent=0, type=foot_type_none){
     echo("footnew");
     foot_y=foot_min_y+(n-1)*step;
+    echo(foot_y);
     difference(){
         union(){// adding material
             translate([foot_offset_x,
@@ -73,8 +74,7 @@ module foot(n=1, vent=0, type=foot_type_none){
                       foot_y,
                       3]); // motherboard floor
             }
-      
-            foot_x_wallmount=(motherboard_w-wall_gap_x)/2+foot_side_wall_t+foot_x_bracket;
+              foot_x_wallmount=(motherboard_w-wall_gap_x)/2+foot_side_wall_t+foot_x_bracket;
             foot_x_offset_wallmount=foot_x-foot_x_wallmount;
             foot_y_offset_wallmount=foot_y-wall_fix_y;   
             for(j=[0,foot_y_offset_wallmount]){
@@ -82,7 +82,7 @@ module foot(n=1, vent=0, type=foot_type_none){
                     translate([i,j,0])
                     cube([foot_x_wallmount,
                           wall_fix_y,
-                          foot_z-foot_step-foot_step1]); // wall mount floor
+                    foot_z-foot_step-foot_step1]); // wall mount floor                      
                 }
             }
             // add material for foot fixation options 
@@ -110,13 +110,11 @@ module foot(n=1, vent=0, type=foot_type_none){
         }
     }// removing material
     motherboard_screw(n=n,t=screw_t, raise=foot_outer_z/2);
-    wall_foot_screw(n=n,t=screw_t);
+    wall_foot_screw(t=screw_t);
     wall_foot_opposite_screw(n=n,t=screw_t);
     if(type==foot_type_dinrail){  // holes for din holder
            dinrail_elecx(n=n, type=1);
     }
-    
-    
     
     if(vent==1){
           z=foot_offset_z-foot_bottom_t;
@@ -136,8 +134,10 @@ module foot(n=1, vent=0, type=foot_type_none){
 
 n=5;
 //walls(n=n);
+//
 //pcbmodule(n=n);
 //wall();
+//walls();
 
 //to print
 //foot(n=n, type=foot_type_none);
