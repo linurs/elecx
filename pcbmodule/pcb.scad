@@ -21,5 +21,7 @@ module pcb(){
   }
 }
 
-//
+// move to center to create 2D drawings with script
+rotate([90,0,180])
+translate([-50,-0.8,-40])
 pcb();
