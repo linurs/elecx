@@ -1,6 +1,6 @@
 // codings
 code_n=14;  // number of bits
-pass=0.5; // gap between the code stripes
+pass=0.5;   // gap between the code stripes
 
 // label for the code
 label_width=24;

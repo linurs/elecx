@@ -7,7 +7,14 @@ use <dinrail.scad>
 use <../linurs/linurs_screw.scad>
 use <../linurs/linurs_body.scad>
 
+show="assembly"; // [assembly,dinrail_bracket,dinrail_lever_holder,dinrail_lever,print_dinrail_bracket,print_dinrail_lever_holder]
+dinholder_x=100;
+s=2;
+n=2;
+t=0;
+
 module dinrail_screw(dinholder_x=100,t=0){
+    echo("dinrailscrews",dinholder_x,dinrail_w1);  
     for(x=[-1,1]){ 
         for(y=[-1,1]){
           translate([x*(dinholder_x+dinrail_w1)/4,
@@ -17,22 +24,18 @@ module dinrail_screw(dinholder_x=100,t=0){
               translate([0,0,-dinrail_screw_l1/2])
               screw_fix(w=dinrail_screw_l1+0.01,
                         d=dinrail_screw,
-                        type=head_cnt,
-                        raise=dinrail_h/2,
+                        type=head_no,
                         t=t);
           }else{
              translate([0,0,-dinrail_screw_l2/2]) 
              screw_fix(w=dinrail_screw_l2+0.01,
                     d=dinrail_screw,
-                    type=head_cnt,
-                    raise=dinrail_h/2,
+                    type=head_no,
                     t=t);
           }    
         }
-    }// holes
+    }
 }    
-
-//  dinrail_screw(dinholder_x=dinholder_x,t=dinholder_pass);
 
 module dinrail_bracket(dinholder_x=100){
   echo("dinrail bracket");  
@@ -149,15 +152,23 @@ module dinrail_lever(dinholder_x=100, s=2, t=0, n=2){
     }// hold back the spring  
 }
 
-//
-dinholder_x=110;
-s=2;
-t=2;
-n=3;
-
-//%rotate([180,0,0])
-//dinrail_bracket(dinholder_x=dinholder_x);
-//%
-dinrail_lever(dinholder_x=dinholder_x, s=s, n=n, t=t);
-//%dinrail_lever_holder(dinholder_x=dinholder_x,s=s);
-//%dinrail();
+if(show=="dinrail_bracket"){
+  dinrail_bracket(dinholder_x=dinholder_x);
+}
+if(show=="print_dinrail_bracket"){
+  rotate([180,0,0])dinrail_bracket(dinholder_x=dinholder_x);
+}
+if(show=="dinrail_lever_holder"){
+  dinrail_lever_holder(dinholder_x=dinholder_x,s=s);
+}
+if(show=="print_dinrail_lever_holder"){
+  rotate([180,0,0])dinrail_lever_holder(dinholder_x=dinholder_x,s=s);
+}
+if(show=="dinrail_lever"){
+  dinrail_lever(dinholder_x=dinholder_x, s=s, t=t, n=n);
+}
+if(show=="assembly"){
+    dinrail_bracket(dinholder_x=dinholder_x);
+    dinrail_lever_holder(dinholder_x=dinholder_x,s=s);
+    dinrail_lever(dinholder_x=dinholder_x, s=s, t=t, n=n);
+}

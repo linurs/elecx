@@ -3,7 +3,6 @@ include <dinrail_dim.scad>
 include <../linurs/linurs_screw_dim.scad>
 
 // dimension for the din holder
-dinholder_x=110;  // x dimension of the assembled din holder
 dinholder_y=26;   // y dimension of the assembled din holder
 dinholder_z=3;    // z dimension
 dinholder_fix_z=2;// z dimension on fix side

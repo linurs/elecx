@@ -6,9 +6,16 @@
 
 include <code_dim.scad>
 
-module code_label(code=0,type=0){
+code=218;//[0:16383]
+x=100;
+y=8;
+z=10;
+code_label=true;
+plate=false;
+
+module code_label(code=0,plate=false){
  code_str=str(code);   
- if(type==0)   
+ if(plate==true)   
  cube([label_width,label_thick,label_height],center=true);            
  rotate([90,0,180])linear_extrude(height = label_text_thick) 
  text(code_str,
@@ -74,17 +81,12 @@ module code_stripe(code=code,s=[100,8,10],inv=0){
  }    
 }
 
-//
-code=218;
-//code=0;
-//code=pow(2,code_n)-1;
-s=[100,8,10];
-
-//
 color("Red")
-code_stripe(code=code,s=s,inv=0);
-//
-color("Blue")
-code_stripe(code=code,s=s,inv=1);
+code_stripe(code=code,s=[x,y,z],inv=0);
 
-//translate([0,0,20])code_label(code=code,type=1);
+color("Blue")
+code_stripe(code=code,s=[x,y,z],inv=1);
+
+if(code_label==true){
+  translate([0,0,20])code_label(code=code,plate=plate);
+}

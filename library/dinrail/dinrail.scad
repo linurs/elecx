@@ -1,7 +1,9 @@
 // din rail
 
 include <dinrail_dim.scad>
-use <linurs_body.scad>
+use <../linurs/linurs_body.scad>
+
+l=100;
 
 module dinrail(l=100)
 {   
@@ -37,5 +39,5 @@ module dinrail(l=100)
   }
 }
 
-dinrail();
+dinrail(l=l);
 

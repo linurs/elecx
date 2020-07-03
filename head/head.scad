@@ -1,153 +1,91 @@
-//head
+// head
+// ====
 // the head of the elecx
 
-include <../elecx_dim.scad>
+// Variables for customizer
+n=2;              // [1,2,3,4,5,6,7,8]
+show="default";   // ["default","2d","xcut","ycut","print"]
+vent=false;
+head_vent_x=2;
+head_vent_y=6;
+head_vent_n=7;
+brand=false;
+
 include <../library/linurs/linurs_screw_dim.scad>
-include <../motherboard/motherboard_dim.scad>
-include <../foot/foot_dim.scad>
+include <../elecx_dim.scad>
 include <head_dim.scad>
 
-use <../library/linurs/linurs_body.scad>
 use <../library/linurs/linurs_screw.scad>
-use <../elecx_screw.scad>
-use <../wall/wall.scad>
-
-head_bracket_x=30;
-head_bracket_undercut_z=2;
-head_vent_x=1.5;
-head_vent_y=2;
-head_vent_n=5;
-head_vent_start1=(motherboard_w-2*bracket_offset_x)/2+bracket_offset_x-head_bracket_x-head_groove_access_x/2;
-head_vent_stop1=(motherboard_w-head_groove_access_x)/2-head_vent_x;
-head_vent_start2=(motherboard_w+head_groove_access_x)/2;
-head_vent_stop2=(motherboard_w-2*bracket_offset_x)/2+bracket_offset_x+head_groove_access_x/2+head_bracket_x-head_vent_x;
-head_brand_y=1;
-head_undercut_x=(motherboard_w-2*bracket_offset_x-head_groove_access_x-2*head_bracket_x)/2;
 
 module head(n=1,vent=0, brand=0, top=0){
-    echo("headnew");
-    head_y=foot_min_y+(n-1)*step;
+    echo("head");
     difference(){
-        translate([foot_offset_x,
-                   foot_offset_y,
-                   pcb_h+head_z]) 
         union(){// adding material
-            translate([-pass_t,-pass_t,0])
-            cube([foot_x+2*pass_t,
-                  head_y+2*pass_t,
-                  head_t]);  // head top
+            translate([0,0,head_h2/2])
+            cube([head_l,head_w(n),head_h2],center=true);  // head top
             
-            for(i=[-pass_t,head_y-foot_side_wall_t+pass_t]){
-                        translate([-pass_t,i,-head_z])
-                        cube([foot_x+2*pass_t,
-                              foot_side_wall_t,
-                              head_z]); // y side walls
-            }
-                    
-            foot_x_offset_wall=foot_x-foot_side_wall_t;
-            for(i=[-pass_t,foot_x_offset_wall+pass_t]){
-                        translate([i,-pass_t,-head_z])
-                        cube([foot_side_wall_t,
-                              head_y+2*pass_t,
-                              head_z]); // x side walls
-            }     
-    
-            for(i=[foot_side_wall_t,
-                   foot_min_y+(n-1)*step-wall_t-foot_side_wall_t]){ 
-                translate([foot_side_wall_t,
-                           i-pass_t/2,
-                           -head_side_wall_stand])
-                cube([motherboard_w-2*bracket_offset_x+2*olp+pass_t,
-                      wall_t+pass_t,
-                      head_side_wall_stand]);// side wall stand
+            for(i=[-1,1]){
+                translate([0,i*(head_w(n)-head_w1)/2,head_h/2])
+                cube([head_l,head_w1,head_h],center=true); // y side walls
             }
             
-            head_bracket_stand=head_z-(bracket_h-pcb_h+bracket_offset_z);            
-            for(i=[foot_side_wall_t,
-                    motherboard_w-2*bracket_offset_x-foot_side_wall_t+2]){
-                translate([i-pass_t/2,
-                           foot_side_wall_t,
-                           -head_bracket_stand])                
-                        
-                cube([bracket_t+olp+pass_t,
-                      2*wall_y+n*step+pass_t,
-                      head_bracket_stand]);  // bracket stand
+            for(i=[-1,1]){
+                translate([i*(head_l-head_l1)/2,0,head_h/2])
+                cube([head_l1,head_w(n),head_h],center=true); // x side walls
             }
             
-            for(i=[0,
-                   head_y-wall_fix_y-wall_t-foot_side_wall_t]){
-                translate([(foot_x-head_groove_access_x)/2,
-                           i,
-                           -head_bracket_stand])                
-                        
-                cube([head_groove_access_x,
-                      wall_fix_y+wall_t+foot_side_wall_t-1,
-                      head_bracket_stand]);  // wall fixation cube up to braket stand
-            }
-            for(i=[foot_side_wall_t+wall_t,
-                   head_y-wall_fix_y-foot_side_wall_t-wall_t]){
-                translate([(foot_x-head_groove_access_x)/2,
-                           i,
-                           -head_z])                
-                        
-                cube([head_groove_access_x,
-                      wall_fix_y-1,
-                      head_z]);  // wall fixation cube up to head
+            for(i=[-1,1]){
+                translate([0,i*(head_w(n)-head_w2)/2,head_h1/2])
+                cube([head_l,head_w2,head_h1],center=true); // y side walls stand
             }
             
-            if(top==1){
-        translate([5,
-                   12,
-                   -7])  
-        cube([100,17.4,8]);
-        }    
-            
+            for(i=[-1,1]){
+                translate([i*(head_l-head_l2)/2,0,head_h1/2])
+                cube([head_l2,head_w(n),head_h1],center=true); // x side walls stand
+            }       
+          
+            for(i=[-1,1]){
+                translate([0,i*((head_w(n)-head_w3)/2-head_w2),head_h/2])
+                cube([head_l3,head_w3,head_h],center=true); // wall fixation
+            }       
         }// removing material 
-        wall_head_screw(t=screw_t);  
-        wall_head_opposite_screw(t=screw_t,n=n);  
-        
-        if(top==1){
-        translate([2,-0.50+2,
-                         0])
-        cube([100-4,17.4-4,500]);
-        }    
-        
-        if(vent==1){
-          for(j=[0:head_vent_n]){ 
-             for(i=[0:n-1]){
-               if((top!=1)||(i!=0)){  
-                   translate([
-                             (head_vent_stop1-head_vent_start1)/head_vent_n*j+head_vent_start1,
-                             (foot_min_y-step)/2+foot_offset_y+i*step+head_vent_y/2,
-                             head_z+pcb_h-head_t/2])
+        for(i=[-1,1]){
+            translate([0,
+                       i*(head_w(n)/2-head_w1-wall_hd1),
+                       head_h/2+head_h2])
+            rotate([0,0,i*-90])
+            nut_cut(w=head_h, 
+                    wi=0, 
+                    d=wall_d1, 
+                    i=head_w3, 
+                    t=head_gap,
+                    rot=true,
+                    type=head_no);
+        }       
+
+        if(vent==true){
+          head_lv_start=head_l3/2+head_vent_x/2;
+          head_lv_stop=head_l/2-head_l2-head_vent_x/2;
+            
+          for(k=[-1,1]){  
+              for(j=[0:head_vent_n]){
+                 x=k*(head_lv_start+j*(head_lv_stop-head_lv_start)/head_vent_n);
+                 echo(j,x);
+                 for(i=[0:n-1]){
+                   y=i*step-(n-1)*step/2;  
+                   translate([x,y,0])
                     cube([head_vent_x,
                            step-head_vent_y,
-                           2*head_t]);
-               }
-            }
-          }
-          for(j=[0:head_vent_n]){
-            for(i=[0:n-1]){
-              if((top!=1)||(i!=0)){   
-                   translate([
-                             (head_vent_stop2-head_vent_start2)/head_vent_n*j+head_vent_start2,
-                             (foot_min_y-step)/2+foot_offset_y+i*step+head_vent_y/2,
-                             head_z+pcb_h-head_t/2])
-                   cube([head_vent_x,
-                          step-head_vent_y,
-                          2*head_t]);
+                           2*head_h],center=true);
+                }
               }
-            }
           }
         }
         
-        if(brand==1){         
-         translate([
-           (motherboard_w-2*bracket_offset_x+2*foot_side_wall_t)/2+bracket_offset_x-foot_side_wall_t,
-           (foot_min_y+(n-1)*step)/2+foot_offset_y,
-           head_z/2])
-         rotate([0,0,90])
-         linear_extrude(height = motherboard_w ) {
+        if(brand==true){         
+         translate([0,0,head_h1/2])
+         rotate([0,180,90])
+         linear_extrude(height = head_h1 ) {
          text(branding, 
              font = "Liberation Sans:style=Bold Italic",
              halign = "center",
@@ -158,16 +96,36 @@ module head(n=1,vent=0, brand=0, top=0){
     }        
 }
 
-n=1;//%walls(n=n);
-//%wall();
-//%head(n=n, vent=1, brand=1);
-//%bracket();
-//%bracket(type=1);
-//pcb();
+if(show=="default"){
+     head(n=n, vent=vent, brand=brand);
+}
 
-//%wall_head_screw(t=0);  
-//%wall_head_opposite_screw(t=0,n=n);  
-//to print
-//rotate([180,0,0])
-//
-head(n=n, vent=1, brand=0, top=1);
+if(show=="print"){
+   head(n=n, vent=vent, brand=brand);
+}
+
+if(show=="2d"){
+  rotate([0,180,0])
+     translate([-50,-21,-85])
+     head(n=n, vent=vent, brand=brand);
+}
+
+if(show=="xcut"){
+  difference(){ 
+   rotate([0,180,0])
+     translate([-50,-21,-85])
+       head(n=n, vent=vent, brand=brand);
+    translate([-100,0,-50])
+      cube([200,100,100]);  
+  }    
+}
+
+if(show=="ycut"){
+  difference(){ 
+    rotate([0,180,0])
+     translate([-50,-21,-85])
+       head(n=n, vent=vent, brand=brand);
+    translate([-100,-100,-50])
+      cube([100,200,100]);  
+  }    
+}

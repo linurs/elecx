@@ -1,15 +1,38 @@
-include <../library/linurs/linurs_screw_dim.scad>
-include <../motherboard/motherboard_dim.scad>
+include <../module/module_dim.scad>
 
-// wall constants
-wall_t=2;        // wall thickness
+wall_foot_l=8;
+wall_foot_w=8;
 
-wall_y=6.5;        // wall outside thickness
-wall_fix_y=9;    // thickness of the wall fix cube
-wall_gap_x=motherboard_w-2*wall_fix_y; // remove material between both wall fixation cubes
-wall_head_fix_h=5; // height of the head fixing cube
-wall_screw=M3;
-wall_screw_t=0.8;// gap added for screws
+wall_screw_gap=0.5;// gap to fit the screw
+wall_d1=M3;
+wall_d2=M3;
 
-wall_d_w=76;     // distance between wall fixation screws
-wall_d_y=(wall_fix_y-wall_t)/2; // y position of the wall fixation screws
+wall_l=module_l;
+wall_l1=pcb_l;
+wall_l2=module_l1;
+wall_l3=pcb_l-2*wall_foot_l;
+wall_l4=96;
+wall_l5=20;
+wall_ld=pcb_l-wall_foot_l;
+
+wall_w=module_h+wall_foot_w;
+wall_w1=wall_foot_w;
+wall_w2=5;
+wall_w3=5;
+wall_w4=75;
+wall_w5=13;
+wall_wd=15;
+
+wall_h=6.5;        // wall outside thickness
+wall_h1=10;
+wall_h2=2;
+wall_h3=1;
+wall_hd1=7;
+wall_hd2=3;
+
+wall_vent_n=20;
+wall_lv=94;
+wall_wv1=26;
+wall_wv2=20;
+wall_vent_x=1.5;
+wall_vent_x2=wall_lv/(wall_vent_n-1);

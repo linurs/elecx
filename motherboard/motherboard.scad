@@ -1,96 +1,65 @@
 // Motherboard of the elecbox
-// This module is not intended to be 3D printed
-include <motherboard_dim.scad>
-include <../library/din41612/connector_dim.scad>
+// ==========================
 
-use <../library/din41612/connector.scad>
+n=2; // [1,2,3,4,5,6,7,8]
+motherboard_assembly=true;
+
+include <motherboard_dim.scad>
+
 use <../library/linurs/linurs_screw.scad>
-use <../elecx_screw.scad>
+use <../library/din41612/din41612_female.scad>
 
 module motherboard(n=1){
   echo("motherboard");  
   difference(){ 
-    translate([0,
-                     0,
-                     -(pcbmodule_con_out+motherboard_con_out+motherboard_t)]){
-      cube([motherboard_w,
-            motherboard_con_t+step*(n-1),
-            motherboard_t]); // the pcb
-    }
-    motherboard_screw(n=n,t=motherboard_pass);
+    cube([motherboard_l,
+          motherboard_w(n),// din41612_female_w+step*(n-1),
+          motherboard_h]); // the pcb
+    motherboard_screw(n=n,t=motherboard_pass); // the holes
   }
 }
 
-module motherboard_connectors(n=1, type=0){
-  echo("motherboard connectors");  
-  color("LightGrey")  
-  translate([0,
-                   0,
-                   -(pcbmodule_con_out+motherboard_con_out+motherboard_t)]){
-    
-    for(i=[1:n]){  // add the connectors  
-      translate([motherboard_w/2,
-                     motherboard_con_t/2+step*(i-1),
-                     motherboard_t])
-     motherboard_con(type=type);
-    }
-  }
-}
-
-module motherboard_assembled(n=1, type=0){
-  echo("motherboard assembled");  
+module motherboard_assembly(n=1){
+  echo("motherboard assembly");  
   motherboard(n=n);
-  motherboard_connectors(n=n, type=type);  
+  for(i=[0:n-1]){ // add the connectors
+      translate([motherboard_l/2,din41612_female_w/2+step*i,motherboard_h])
+      din41612_female();
+  }    
 }
 
-module motherboard_codes(n=1, type=0){
-  echo("motherboard codings");  
-  color("LightGrey")  
-  translate([0,
-                   0,
-                  -(pcbmodule_con_out+motherboard_con_out+motherboard_t)])  
-  for(i=[1:n]){  // add the connectors  
-      translate([motherboard_w/2,
-                       motherboard_con_t/2+step*(i-1)+step/2,
-                       motherboard_t])
-                  
-      motherboard_con(type=2,code=code,code_str=code_str);
+module motherboard_screw(n=1,t=0, raise=0){
+  echo("motherboard screw");  
+  for(i=[1:n*2-1]){ // add the holes every step and between
+    for(j=[-1,1]){
+      if(i%2==0){  // where no connector
+        translate([(j*din41612_female_dl+motherboard_l)/2,
+                   step/2*(i-1)+din41612_female_w/2,
+                   0])
+          screw_fix(w=screw_motherboard_l,
+          d=screw_motherboard_d,
+          type=head_cyl, 
+          t=t);
+      }else{ // where connector
+        translate([(j*din41612_female_dl+motherboard_l)/2,
+                   step/2*(i-1)+din41612_female_w/2, 
+                   0])
+          screw_fix(w=screw_motherboard_l,
+                    d=screw_motherboard_d,
+                    type=head_cyl, 
+                    t=t);               
+      }    
+    }
   }
 }
 
-module connectors(n=1){
-  echo("pcb connectors");  
-  color("LightGrey")  
-  translate([(motherboard_w-con_w)/2,0,-pcbmodule_con_out])  
-  for(i=[1:n]){  // add the connectors  
-        translate([0,
-                         step*(i-1),
-                         0])
-        connector();  
-  }
+if(motherboard_assembly==true){
+  motherboard_assembly(n=n);
+}else{
+    // Move to center to create 2D drawings from top view 
+    // with script OpenSCAD22d.py
+    translate([-motherboard_l/2,
+               -(din41612_female_w+step*(n-1))/2, 
+               -motherboard_h/2])
+    motherboard(n=n);
 }
-
-module pcb_codes(n=1){
-  echo("pcb connectors");  
-  color("LightGrey")  
-      translate([(motherboard_w-con_w)/2,0,-pcbmodule_con_out])  
-  for(i=[1:n]){  // add the connectors  
-          translate([0,
-                     step*(i-1)+step/2,
-                     0])
-       connector(type=1, code=code,code_str=code_str);  
-      }
-}
-
-n=2;
-code=0;
-code_str=str(pow(2,14));
-
-//connectors(n=n); 
-//pcb_codes(n=n); 
-//motherboard_connectors(n=n, type=0);
-//motherboard_codes(n=n, type=0);
-//motherboard(n=n);
-
-//
-motherboard_assembled(n=n, type=1);
