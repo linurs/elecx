@@ -70,7 +70,6 @@ module head(n=1,vent=0, brand=0, top=0){
           for(k=[-1,1]){  
               for(j=[0:head_vent_n]){
                  x=k*(head_lv_start+j*(head_lv_stop-head_lv_start)/head_vent_n);
-                 echo(j,x);
                  for(i=[0:n-1]){
                    y=i*step-(n-1)*step/2;  
                    translate([x,y,0])

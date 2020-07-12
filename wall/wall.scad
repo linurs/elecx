@@ -54,7 +54,7 @@ module wall(vent=false, brand=false){
         translate([i*wall_ld/2,
                    wall_h/2-wall_hd2,
                    module_h/2+wall_w1/2])rotate([0,0,90])
-        nut_cut(w=wall_w1*3, wi=0, d=wall_d2, i=10, t=0,  rot=true, type=head_cyl);
+        nut_cut(w=wall_w1*3, wi=0, d=wall_d2, i=10, t=wall_screw_gap,  rot=true, type=head_cyl);
     } 
     // cut the foot fixation cube in two
     translate([0,
