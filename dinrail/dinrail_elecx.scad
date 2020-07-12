@@ -1,54 +1,65 @@
 // din rail holder for elecx 
-// to check how the components interfere
 
-include <../elecx_dim.scad>
-include <../library/dinrail/dinrail_dim.scad>
 include <../motherboard/motherboard_dim.scad>
-include <../foot/foot_dim.scad>
-include <../library/dinrail/dinrail_holder_dim.scad>
+include <dinrail_elecx_dim.scad>
+
+use <../library/linurs/linurs_screw.scad>
 
 use <../library/dinrail/dinrail.scad>
 use <../library/dinrail/dinrail_holder.scad>
 
-module dinrail_elecx_single(type=0){
-  if(type==0){
-      dinrail_lever_l=motherboard_w-2*bracket_offset_x+2*foot_side_wall_t;
-      dinrail_lever(l=dinrail_lever_l);
-      dinrail_bracket(l=din_bracket_l);
-      // dinrail_holder(l=din_bracket_l);
-      
-      dinrail_lever_holder(l=din_bracket_l);
-  }else{    
-    dinrail_screw(dinholder_x=dinholder_x,t=dinholder_pass);  
-  }
-}
-
-module dinrail_elecx(n=1, type=0){
-  if(n<din_two_holder){
-  translate([50,
-             (foot_min_y+(n-1)*step)/2+foot_offset_y,
-             foot_offset_z-dinrail_h
-            ])
-  dinrail_elecx_single(type=type);
-  }else{
-    for(y=[foot_offset_y+dinholder_y,
-           foot_min_y+(n-1)*step+foot_offset_y-dinholder_y,])  
-      translate([50,
-             y,
-             foot_offset_z-dinrail_h
-            ])
-            dinrail_elecx_single(type=type);
-  }
-}
-
 n=4;
-//dinrail_elecx(n=n, type=1);
-//
-dinrail_elecx(n=n, type=0);
-//foot(n=n, type=2);
+dinrail=true;
 
-translate([50,
-             (foot_min_y+(n-1)*step)/2+foot_offset_y,
-             foot_offset_z-dinrail_h])
+module dinrail_elecx_single(){
+    dinrail_lever(dinholder_x=dinholder_x);
+    dinrail_bracket(dinholder_x=dinholder_x);
+    dinrail_lever_holder(dinholder_x=dinholder_x);
+}
 
-dinrail(l=100+step*(n-1));
+module dinrail_elecx(n=1,dinrail=true){
+    echo(din_two_holder);
+  if(n<din_two_holder){
+    dinrail_elecx_single();
+  }else{
+    for(y=[-1,1])
+      translate([0,
+        y*(n-1)*step/2,
+        0])
+        dinrail_elecx_single();
+  }
+  if(dinrail==true){
+   dinrail(l=100+step*(n-1));
+  }   
+}
+
+module dinrail_elecx_single_holes(){
+  for(x=[-1,1]){ 
+        for(y=[-1,1]){
+          translate([x*(dinholder_x+dinrail_w1)/4,
+                     y*(dinholder_y-dinrail_lever_w)/2,
+                     -foot_h1])
+              screw_fix(w=foot_h1*4,
+                        d=dinrail_screw,
+                        type=head_cnt,
+                        t=foot_gap);
+
+        }
+      } 
+  }
+
+module dinrail_elecx_holes(n=1){
+  if(n<din_two_holder){
+    dinrail_elecx_single_holes();
+  }else{
+    for(y=[-1,1])
+      translate([0,
+        y*(n-1)*step/2,
+        0])
+        dinrail_elecx_single_holes();
+  }   
+}
+
+dinrail_elecx(n=n,dinrail=dinrail);
+
+ 

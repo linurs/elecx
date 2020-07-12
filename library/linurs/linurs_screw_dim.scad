@@ -1,15 +1,12 @@
 // Metric screws and nuts 
-// urs@linurs.org 2015
+// urs@linurs.org
 
 // contains dimensions of linurs_screw and can be included in other 
 // OpenScad files 
 
-
-// Consistent parameters in this file
+// Parameters in this file
 // d screw diameter M2_5, M3, ... (enumeration with screw_d)
 // t millimeters added to diameters 
-//   For the screw, head, nut = 0. 
-//   For the piece where the screw, nut, ... passes through = 0.5 so it slides in well
 
 // enumerations of metric threads
 M2_5=0;

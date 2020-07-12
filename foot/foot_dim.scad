@@ -1,38 +1,31 @@
-// elecbox
-include <../library/linurs/linurs_screw_dim.scad>
+include <../bracket/bracket_dim.scad>
+include <../module/module_dim.scad>
 include <../motherboard/motherboard_dim.scad>
-include <../pcbmodule/pcbmodule_dim.scad>
 include <../wall/wall_dim.scad>
 
-// foot constants
-foot_motherboard_z=8; // z distance of free space under motherboard
-foot_motherboard_f=8;  // motherboard support distance
-foot_side_wall_t=1;    // thickness of side wall
-foot_min_y=step+2*(wall_y+foot_side_wall_t); // 1 module y dimension of the foot
+foot_gap=0.5;
 
-foot_step=pcbmodule_con_out+motherboard_con_out+motherboard_t+bracket_offset_z; // motherboard solder side to bracket
-foot_step1=foot_step; // step for the wall fixation cubes
+foot_l2=2;
+foot_l=module_l+2*foot_l2+foot_gap;
+foot_l1=65;
+foot_l3=foot_l2+bracket_h2+bracket_gap/2;
+foot_l4=foot_l3+9;
+foot_l5=(wall_l1-wall_l3)/2+foot_l3;
 
-foot_bottom_t=1;                                    // bottom thickness
-foot_side_wall_h=5;                                 // height of side wall
-foot_z=foot_step1+foot_motherboard_z+foot_bottom_t; // functional z dimension of foot 
-foot_outer_z=foot_z+foot_side_wall_h;               // outside z dimension of foot
-foot_x=motherboard_w-2*bracket_offset_x+2*foot_side_wall_t; // x dimension of foot
+foot_h1=2;
+foot_h2=1;
+foot_h4=8+foot_h1;
+foot_h=foot_h4-motherboard_z_offset; 
+foot_h3=foot_h4-motherboard_z_offset+bracket_offset_z; 
+foot_h5=foot_h4-motherboard_z_offset+bracket_offset_z-wall_w1;
 
-//foot offsets
-foot_offset_x=bracket_offset_x-foot_side_wall_t; // x dimension 
-foot_offset_y=-wall_fix_y-foot_side_wall_t;      // y dimension 
-foot_offset_z=bracket_offset_z-foot_z;           // z dimension 
+foot_w2=2;
+foot_w4=foot_w2+wall_h+bracket_w1;
+foot_w5=wall_h+foot_w2;
 
-// enumerations for foot fixing variants
-foot_type_none=0;
-foot_type_dinrail=1;
-foot_type_bracket=2;
-
-// marking dimensions for foot_type_feed
-foot_marking_in=4;
-foot_marking_d=6;
-foot_marking_h=0.5;
+function foot_w(n)=module_w(n)+n*bracket_gap+2*wall_h+2*foot_w2+foot_gap;
+function foot_w1(n)=foot_w(n)-8;
+function foot_w3(n)=motherboard_w(n)+foot_gap;
 
 // bracket dimension for foot_type_bracket
 foot_bracket_t=3;
@@ -40,3 +33,5 @@ foot_bracket_x=10;
 foot_bracket_y=10;
 foot_bracket_d=4;
 foot_bracket_enforce_d=5;
+
+foot_dh=8;

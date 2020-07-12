@@ -1,11 +1,41 @@
 // linurs body
-// body lets create mode advanced bodies as the standard ones from OpenSCAD as cube cylinder sphere and polyhedron
+// ===========
+// body lets create mode advanced bodies as the standard ones from OpenSCAD as cube, cylinder, sphere and polyhedron
+
+center=true;
+fn=16;
+
+/* [prism] */
+show_prism=false;
+a_prism=[0,0];
+b_prism=[10,0];
+c_prism=[0,10];
+h_prism=10;
+
+/* [channel] */
+show_channel=false;
+d1_channel=1;
+d2_channel=3;
+h_channel=10;
+a_channel=90;
+
+/* [roundcube] */
+show_roundcube=false;
+// x,y,z
+s_roundcube=[10,10,10]; 
+r_roundcube=0.1; 
+
+/* [spring] */
+show_spring=false;
+// x,y,z
+d_spring=[10,25,1]; 
+s_spring=2;
+n_spring=2;
 
 module prism(face=[[0,0],[1,0],[0,1]], h=1, center=false){  
   linear_extrude(height = h, center = center)
   polygon(points = [ face[0], face[1], face[2]], paths = [ [0, 1, 2]]);   
 }
-//prism();
 
 module roundcube(size=[1,1,1], r=0.1, center=false, $fn=8){
   t = center==true ? 0 : 1; 
@@ -85,12 +115,7 @@ module springelement(x=0, y=0, t=1, s=2, x1=0, y1=0, a=0, l=10, m=0, e=0){
     }
 }    
 
-
 module spring(s=2,d=[10,10,1],n=2){
-//x center x
-//y center y
-//z tickness    
-//s width of spring rods
     r1=s/2;
     r2=1.5*s;
     
@@ -128,16 +153,28 @@ module spring(s=2,d=[10,10,1],n=2){
     }    
 }
 
+if(show_prism==true){
+   prism(h=h_prism,face=[a_prism,b_prism,c_prism],center=center); 
+}
 
+if(show_roundcube==true){
+   roundcube(
+    size=s_roundcube,
+    center=center,
+    r=r_roundcube, 
+    $fn=fn);
+}
 
-//
-roundcube(size=[1,2,3],center=true, $fn=16);
-//
-translate([0,5,0])prism(h=10,center=true);
-//
-translate([0,10,0])channel();
-//
-translate([0,15,0]) spring(d=[10,30,4],n=2, s=2);
+if(show_channel==true){
+  channel(
+    d1=d1_channel,
+    d2=d2_channel,
+    h=h_channel,
+    a=a_channel, 
+    center=center, 
+    $fn=fn);
+}
 
-
-
+if(show_spring==true){ 
+    spring(d=d_spring,n=n_spring, s=s_spring);
+}    

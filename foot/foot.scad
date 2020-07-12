@@ -1,149 +1,161 @@
-//foot
-include <../elecx_dim.scad>
-include <../motherboard/motherboard_dim.scad>
-include <../pcbmodule/pcbmodule_dim.scad>
-include <../library/dinrail/dinrail_holder_dim.scad>
-include <foot_dim.scad>
+// foot
+// ====
+// the foot of the elecx
 
-use <../library/linurs/linurs_body.scad>
-use <../wall/wall.scad>
-use <../pcbmodule/pcbmodule.scad>
-use <../elecx_screw.scad>
-use <../motherboard/motherboard.scad>
-use <../dinrail/dinrail_elecx.scad>
-
+n=2;              // [1,2,3,4,5,6,7,8]
+show="default";   // [default,2d,xcut,ycut,print]
+foot_type="none"; // [none,default,dinrail,bracket]
+vent=false;   
 foot_vent_x=1.5;
-foot_vent_y=2;
+foot_vent_y=6;
 foot_vent_n=11;
 
-foot_vent_start=foot_x/2-30+foot_offset_x;
-foot_vent_stop =foot_x/2+30+foot_offset_x;
+include <foot_dim.scad>
+include <../library/dinrail/dinrail_holder_dim.scad>
+include <../dinrail/dinrail_elecx_dim.scad>
 
-module foot(n=1, vent=0, type=foot_type_none){
-    echo("footnew");
-    foot_y=foot_min_y+(n-1)*step;
+use <../library/linurs/linurs_screw.scad>
+use <../library/din41612/din41612_female.scad>
+use <../dinrail/dinrail_elecx.scad>
+
+module foot(n=1, vent=false, type="none"){
+    echo("foot");
     difference(){
         union(){// adding material
-            translate([foot_offset_x,
-                   foot_offset_y,
-                   foot_offset_z]){
-            cube([foot_x,
-                  foot_y,
-                  foot_bottom_t]);  // the bottom
-            
-            for(i=[-pass_t,foot_y-foot_side_wall_t+pass_t]){
-                translate([-pass_t,i,0])
-                cube([foot_x+2*pass_t,
-                      foot_side_wall_t,
-                      foot_outer_z]); // y side walls
+            translate([0,0,foot_h1/2])cube([foot_l,foot_w(n),foot_h1],center=true);  // the bottom
+         
+            for(i=[-1,1]){
+               translate([(foot_l-foot_l2)/2*i,0,foot_h/2])
+                cube([foot_l2,foot_w(n),foot_h],center=true); //y side walls
             }
             
-            foot_x_offset_wall=foot_x-foot_side_wall_t;
-            for(i=[-pass_t,foot_x_offset_wall+pass_t]){
-                translate([i,-pass_t,0])
-                cube([foot_side_wall_t,
-                      foot_y+2*pass_t,
-                      foot_outer_z]); // x side walls
+            for(i=[-1,1]){
+               translate([(foot_l-foot_l3)/2*i,0,foot_h3/2])
+                cube([foot_l3,foot_w(n),foot_h3],center=true); // bracket floor
             }
             
-            foot_x_offset_bracket=foot_x_offset_wall-bracket_t;
-            foot_x_bracket=bracket_t+foot_side_wall_t;
-            for(i=[0,foot_x_offset_bracket]){
-                translate([i,0,0])
-                cube([foot_x_bracket,
-                      foot_y,
-                      foot_z]); // bracket floor
+            for(i=[-1,1]){
+               translate([(foot_l-foot_l4)/2*i,
+                          (foot_w3(n)-foot_w(n))/2+foot_w4,
+                          foot_h4/2])
+                cube([foot_l4,foot_w3(n),foot_h4],center=true); // motherboard floor
             }
             
-            foot_x_offset_motherboard=foot_x_offset_wall-bracket_t-foot_motherboard_f;
-            foot_x_motherboard=bracket_t+foot_side_wall_t+foot_motherboard_f;
-            for(i=[0,foot_x_offset_motherboard]){
-                translate([i,(foot_y-(motherboard_con_t+step*(n-1)))/2,0])
-                cube([foot_x_motherboard,
-                      motherboard_con_t+step*(n-1),
-                      foot_z-foot_step]); // motherboard floor
-            }
-            
-            foot_nut=10;
-            foot_x_offset_nut=foot_x_offset_wall-bracket_t-foot_nut;
-            foot_x_nut=bracket_t+foot_side_wall_t+foot_nut;
-            for(i=[0,foot_x_offset_nut]){
-                translate([i,0,0])
-                cube([foot_x_nut,
-                      foot_y,
-                      3]); // motherboard floor
-            }
-      
-            foot_x_wallmount=(motherboard_w-wall_gap_x)/2+foot_side_wall_t+foot_x_bracket;
-            foot_x_offset_wallmount=foot_x-foot_x_wallmount;
-            foot_y_offset_wallmount=foot_y-wall_fix_y;   
-            for(j=[0,foot_y_offset_wallmount]){
-                for(i=[0,foot_x_offset_wallmount]){
-                    translate([i,j,0])
-                    cube([foot_x_wallmount,
-                          wall_fix_y,
-                          foot_z-foot_step-foot_step1]); // wall mount floor
+            for(i=[-1,1]){
+                for(j=[-1,1]){
+                    translate([(foot_l-foot_l5)/2*i,(foot_w(n)-foot_w5)/2*j,foot_h5/2])
+                    cube([foot_l5,foot_w5,foot_h5],center=true); // wall stands
                 }
             }
+            
+            for(i=[-1,1]){
+               translate([0,(foot_w(n)-foot_w2)/2*i,foot_h/2])
+                cube([foot_l,foot_w2,foot_h],center=true); //x side walls
+            }
+                        
             // add material for foot fixation options 
-            if(type==foot_type_bracket){  
-              for(i=[foot_bracket_y/2,foot_bracket_y/2+foot_min_y-foot_bracket_y+(n-1)*step]){    
-                for(j=[-foot_bracket_x/2,
-                       motherboard_w+2*foot_side_wall_t-2*bracket_offset_x+foot_bracket_x/2]){                
-                  translate([j,i,foot_bracket_t/2])
-                    difference(){  // the brackets
-                      cube([foot_bracket_x,
-                            foot_bracket_y,
-                            foot_bracket_t],center=true);
-                      cylinder(h=foot_bracket_t+olp,d=foot_bracket_d, center=true,$fn=16);  
+            if(type=="bracket"){  
+                for(i=[-1,1]){
+                    for(j=[-1,1]){
+                        translate([(foot_l+foot_bracket_x)/2*j,
+                                   (foot_w(n)-foot_bracket_y)/2*i,
+                                   foot_bracket_t/2])
+                        difference(){
+                            cube([foot_bracket_x,
+                                    foot_bracket_y,
+                                    foot_bracket_t],center=true);
+                            cylinder(h=2*foot_bracket_t,d=foot_bracket_d, center=true,$fn=16);
+                        }  
+                        translate([foot_l/2*j,
+                                   (foot_w(n)-foot_bracket_y)/2*i,
+                                   foot_bracket_t/2])
+                        rotate([0,-90,90])
+                        cylinder(h=foot_bracket_y,d=foot_bracket_enforce_d, center=true, $fn=3);   
                     }
                 }
-                for(j=[0,
-                       motherboard_w+2*foot_side_wall_t-2*bracket_offset_x]){
-                           translate([j,i,foot_bracket_t/2+foot_bracket_t/2])
-                  rotate([0,-90,90])
-                   cylinder(h=foot_bracket_y,d=foot_bracket_enforce_d, center=true, $fn=3);  // enforcement of the brackets
-                }
-              }// mounting brackets
             }
-            
-        }
     }// removing material
-    motherboard_screw(n=n,t=screw_t, raise=foot_outer_z/2);
-    wall_foot_screw(n=n,t=screw_t);
-    wall_foot_opposite_screw(n=n,t=screw_t);
-    if(type==foot_type_dinrail){  // holes for din holder
-           dinrail_elecx(n=n, type=1);
+    
+       translate([0,0,foot_h2+foot_h1/2])cube([foot_l1,foot_w1(n),foot_h1],center=true);  // at the bottom
+    
+       for(i=[1:n*2-1]){ // add the holes every step and between
+           for(j=[-1,1]){
+            translate([din41612_female_dl/2*j,
+                       -foot_w(n)/2+step/2*(i-1)+foot_w4+din41612_female_w/2,
+                       foot_h4-foot_dh/2])
+              screw_fix(w=foot_dh,
+              d=M2_5,
+              type=head_no, 
+              t=foot_gap,
+              nut_sink=foot_h4-foot_dh);
+           }
+       }
+       
+       for(i=[-1,1]){ // add holes for the wall
+           for(j=[-1,1]){
+               translate([wall_ld/2*j,
+                       (foot_w(n)/2-foot_w2-wall_hd2)*i,
+                       foot_h5/2]) 
+              rotate([0,180,0]) 
+              screw(w=foot_h5+0.1,
+              d=M3,
+              type=head_cnt, 
+              t=foot_gap);
+           }
+       }    
+        
+    if(type=="dinrail"){  // holes for din holder
+      echo("dinrail",dinholder_x,dinrail_w1);  
+      echo(two_holder(n));  
+      dinrail_elecx_holes(n=n);   
     }
-    
-    
-    
-    if(vent==1){
-          z=foot_offset_z-foot_bottom_t;
-          for(j=[0:foot_vent_n]){
-             x=(foot_vent_stop-foot_vent_start)/foot_vent_n*j+foot_vent_start;
+  
+    if(vent==true){
+         for(j=[0:foot_vent_n]){
+             x=(foot_l-foot_l1)/2-foot_l/2+foot_vent_x/2 + j*(foot_l1-foot_vent_x)/foot_vent_n;
+             echo(j,x);
              for(i=[0:n-1]){
-               y=(foot_min_y-step)/2+foot_offset_y+i*step+foot_vent_y/2;  
-               translate([x,y,z])
+               y=i*step-(n-1)*step/2;  
+               translate([x,y,0])
                 cube([foot_vent_x,
                        step-foot_vent_y,
-                       3*foot_bottom_t]);
+                       2*foot_h1],center=true);
             }
           }
         }
   }  
 }    
 
-n=5;
-//walls(n=n);
-//pcbmodule(n=n);
-//wall();
+if(show=="default"){
+    foot(n=n, type=foot_type, vent=vent);
+}
 
-//to print
-//foot(n=n, type=foot_type_none);
-//translate([0,150,0])
-//
-foot(n=n, type=foot_type_dinrail, vent=1);
-//translate([0,300,0])
-//foot(n=n, type=foot_type_bracket);
-//motherboard_assembled(n=n, type=0);
+if(show=="print"){
+   foot(n=n, type=foot_type, vent=vent);
+}
+
+if(show=="2d"){
+    rotate([0,0,0])
+    translate([-51,-21.5,14]) 
+    foot(n=n, type=foot_type, vent=vent);
+}
+
+if(show=="xcut"){
+  difference(){ 
+    rotate([0,0,0])
+      translate([-51,-21.5,14]) 
+      foot(n=n, type=foot_type, vent=vent);
+    translate([-100,0,-50])
+      cube([200,100,100]);  
+  }    
+}
+
+if(show=="ycut"){
+  difference(){ 
+    rotate([0,0,0])
+      translate([-51,-21.5,14]) 
+      foot(n=n, type=foot_type, vent=vent);
+    translate([-100,-100,-50])
+      cube([100,200,100]);  
+  }    
+}
